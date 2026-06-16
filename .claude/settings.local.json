@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsx -e ' *)",
+      "Bash(curl -s http://localhost:8000/health)",
+      "Bash(curl -v http://localhost:8000/health)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(npx tsx *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8000/health)",
+      "Bash(npm run *)",
+      "Bash(node -e ' *)",
+      "Bash(tsx scripts/_db_status.ts)",
+      "PowerShell(New-Item *)",
+      "PowerShell(cd \"C:\\\\Users\\\\secon\\\\Downloads\\\\supplifyed-handoff\\\\supplifyed-handoff\"; $env:SURREALDB_URL=\"http://localhost:8000\"; npx next build 2>&1 | Select-String -Pattern \"error|Error|TypeError|Cannot|undefined\" | Select-Object -First 40)",
+      "PowerShell(Receive-Job *)",
+      "PowerShell(try { $response = Invoke-WebRequest -Uri \"http://localhost:3001/ingredient/l-theanine\" -TimeoutSec 15 -UseBasicParsing; Write-Host \"Status: $\\($response.StatusCode\\)\"; $response.Content | Select-String -Pattern \"error|Error|TypeError|Cannot\" | Select-Object -First 10 } catch { Write-Host \"Error: $_\" })",
+      "PowerShell(Out-Null *)"
+    ]
+  }
+}

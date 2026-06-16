@@ -1,0 +1,264 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Design tokens ───────────────────────────────────────────────────────── */
+:root {
+  --c-bg:            #000000;
+  --c-surface:       #0a0a0a;
+  --c-surface-2:     #111111;
+  --c-surface-3:     #161616;
+  --c-border:        #232323;
+  --c-border-subtle: #181818;
+  --c-text:          #f5f5f7;
+  --c-text-2:        #a1a1a6;
+  --c-text-3:        #6e6e73;
+  --c-accent:        #34d399;
+  --c-accent-dim:    rgba(52, 211, 153, 0.10);
+  --c-accent-glow:   rgba(52, 211, 153, 0.06);
+  --c-green-1:       #059669;
+  --c-green-2:       #065f46;
+  --radius-sm:       8px;
+  --radius-md:       14px;
+  --radius-lg:       20px;
+  --radius-xl:       28px;
+  --shadow-card:     0 1px 2px rgba(0,0,0,0.6), 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-card-hover: 0 2px 4px rgba(0,0,0,0.8), 0 16px 48px rgba(0,0,0,0.6);
+  --ease-out-expo:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:     cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Base ────────────────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--c-bg);
+  color: var(--c-text);
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1, 'ss01' 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ─── Hero gradient ───────────────────────────────────────────────────────── */
+.hero-gradient {
+  background:
+    radial-gradient(ellipse 70% 55% at 12% 50%, rgba(16, 185, 129, 0.14) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 65% at 88% 25%, rgba(5, 150, 105, 0.10) 0%, transparent 55%),
+    radial-gradient(ellipse 90% 35% at 50% 105%, rgba(0, 0, 0, 0.70) 0%, transparent 75%),
+    var(--c-bg);
+}
+
+/* ─── Mesh grid overlay ───────────────────────────────────────────────────── */
+.hero-mesh {
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.018) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.018) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* ─── Card surface ────────────────────────────────────────────────────────── */
+.card {
+  background: var(--c-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.35s var(--ease-in-out), transform 0.35s var(--ease-in-out);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+
+/* ─── Source badge ────────────────────────────────────────────────────────── */
+.source-badge {
+  @apply inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium tracking-wide;
+  letter-spacing: 0.04em;
+}
+
+/* ─── Evidence dots ───────────────────────────────────────────────────────── */
+.evidence-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* ─── Reveal animation ────────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.7s var(--ease-out-expo) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.5s var(--ease-out-expo) forwards;
+}
+
+/* Stagger delays for grouped children */
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.10s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.20s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.30s; }
+
+/* ─── Tier strip at top of product cards ─────────────────────────────────── */
+[data-tier="aspiration"] .tier-strip { background: #059669; }
+[data-tier="rational"]   .tier-strip { background: #4b5563; }
+[data-tier="economic"]   .tier-strip { background: #374151; }
+
+/* ─── Gradient text ───────────────────────────────────────────────────────── */
+.text-gradient {
+  background: linear-gradient(135deg, #f5f5f7 0%, #a1a1a6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-green {
+  background: linear-gradient(135deg, #34d399 0%, #059669 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Category tile gradients ─────────────────────────────────────────────── */
+.cat-performance  { background: radial-gradient(ellipse at 30% 40%, rgba(124, 45, 18, 0.55) 0%, rgba(12, 10, 9, 0.9) 70%), #0a0a0a; }
+.cat-sleep        { background: radial-gradient(ellipse at 30% 40%, rgba(30, 27, 75, 0.70) 0%, rgba(8, 8, 16, 0.9) 70%),  #08080f; }
+.cat-inflammation { background: radial-gradient(ellipse at 30% 40%, rgba(127, 29, 29, 0.55) 0%, rgba(10, 8, 8, 0.9)  70%), #0a0808; }
+.cat-gut-health   { background: radial-gradient(ellipse at 30% 40%, rgba(4, 47, 46, 0.70)  0%, rgba(4, 10, 10, 0.9)  70%), #040a0a; }
+.cat-longevity    { background: radial-gradient(ellipse at 30% 40%, rgba(2, 44, 34, 0.70)  0%, rgba(4, 10, 8, 0.9)   70%), #040a08; }
+.cat-recovery     { background: radial-gradient(ellipse at 30% 40%, rgba(12, 74, 110, 0.60) 0%, rgba(4, 8, 14, 0.9)  70%), #04080e; }
+.cat-vitamins     { background: radial-gradient(ellipse at 30% 40%, rgba(59, 7, 100, 0.55)  0%, rgba(8, 4, 14, 0.9)  70%), #08040e; }
+.cat-minerals     { background: radial-gradient(ellipse at 30% 40%, rgba(28, 25, 23, 0.80)  0%, rgba(8, 8, 8, 0.9)   70%), #080808; }
+.cat-herbals      { background: radial-gradient(ellipse at 30% 40%, rgba(5, 46, 22, 0.70)   0%, rgba(4, 10, 6, 0.9)  70%), #040a06; }
+
+/* ─── Holographic shimmer (ChemCard) ─────────────────────────────────────── */
+@keyframes holo-shift {
+  0%   { background-position: 0% 50%;   }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%;   }
+}
+
+@keyframes shimmer-sweep {
+  0%   { transform: translateX(-150%) skewX(-20deg); opacity: 0;   }
+  40%  { opacity: 0.5; }
+  100% { transform: translateX(250%)  skewX(-20deg); opacity: 0;   }
+}
+
+@keyframes holo-glow-pulse {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(52, 211, 153, 0.25), 0 0 24px rgba(52, 211, 153, 0.08); }
+  50%       { box-shadow: 0 0 0 1px rgba(52, 211, 153, 0.45), 0 0 48px rgba(52, 211, 153, 0.18); }
+}
+
+.holo-card {
+  position: relative;
+  overflow: hidden;
+  animation: holo-glow-pulse 3.5s ease-in-out infinite;
+}
+
+.holo-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    125deg,
+    transparent 0%,
+    rgba(52, 211, 153, 0.03) 25%,
+    rgba(110, 231, 183, 0.06) 50%,
+    rgba(52, 211, 153, 0.03) 75%,
+    transparent 100%
+  );
+  background-size: 250% 250%;
+  animation: holo-shift 6s ease infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.holo-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.04),
+    transparent
+  );
+  animation: shimmer-sweep 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ─── Typewriter ─────────────────────────────────────────────────────────── */
+@keyframes typewriter-in {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0%   0 0); }
+}
+
+.typewriter {
+  display: inline-block;
+  animation: typewriter-in 1.2s steps(30, end) forwards;
+}
+
+/* ─── Focus visible ────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ─── Scrollbar ────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track { background: var(--c-bg); }
+::-webkit-scrollbar-thumb {
+  background: var(--c-border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: #333; }
+
+/* ─── Selection ────────────────────────────────────────────────────────────── */
+::selection {
+  background: rgba(52, 211, 153, 0.25);
+  color: var(--c-text);
+}
