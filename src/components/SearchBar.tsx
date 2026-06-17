@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useTransition } from 'react';
+import { useState, useRef, useTransition, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface Props {
@@ -14,6 +14,39 @@ export default function SearchBar({ autoFocus = false, defaultValue = '' }: Prop
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
+  const [suggestions, setSuggestions] = useState<{ name: string; slug: string }[]>([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const fetchSuggestions = useCallback(async (q: string) => {
+    if (q.length < 1) { setSuggestions([]); setShowDropdown(false); return; }
+    try {
+      const res = await fetch(`/api/suggestions?q=${encodeURIComponent(q)}`);
+      const data = await res.json();
+      setSuggestions(data.suggestions ?? []);
+      setShowDropdown(data.suggestions?.length > 0);
+      setActiveIndex(-1);
+    } catch {
+      setSuggestions([]);
+    }
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => fetchSuggestions(value), 150);
+    return () => clearTimeout(timer);
+  }, [value, fetchSuggestions]);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setShowDropdown(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const q = value.trim();
@@ -24,7 +57,7 @@ export default function SearchBar({ autoFocus = false, defaultValue = '' }: Prop
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-2xl">
+    <form onSubmit={handleSubmit} className="relative w-full max-w-2xl">
       <div className="relative flex items-center group">
         {/* Search icon */}
         <svg
@@ -40,6 +73,24 @@ export default function SearchBar({ autoFocus = false, defaultValue = '' }: Prop
           type="text"
           value={value}
           onChange={(e) => setValue(e.target.value)}
+          onKeyDown={(e) => {
+            if (!showDropdown) return;
+            if (e.key === 'ArrowDown') {
+              e.preventDefault();
+              setActiveIndex((i) => Math.min(i + 1, suggestions.length - 1));
+            } else if (e.key === 'ArrowUp') {
+              e.preventDefault();
+              setActiveIndex((i) => Math.max(i - 1, -1));
+            } else if (e.key === 'Enter' && activeIndex >= 0) {
+              e.preventDefault();
+              const s = suggestions[activeIndex];
+              router.push(`/ingredient/${s.slug}`);
+              setShowDropdown(false);
+            } else if (e.key === 'Escape') {
+              setShowDropdown(false);
+              setActiveIndex(-1);
+            }
+          }}
           placeholder="Ingredient, question, or product..."
           autoFocus={autoFocus}
           style={{
@@ -77,6 +128,52 @@ export default function SearchBar({ autoFocus = false, defaultValue = '' }: Prop
           )}
         </button>
       </div>
+
+      {showDropdown && suggestions.length > 0 && (
+        <div
+          ref={dropdownRef}
+          role="listbox"
+          style={{
+            background: 'var(--bg-surface)',
+            border: '1px solid var(--border-subtle)',
+            boxShadow: '0 16px 48px rgba(0,0,0,0.6)',
+          }}
+          className="absolute top-full left-0 right-0 mt-2 rounded-xl overflow-hidden z-50"
+        >
+          {suggestions.map((s, i) => (
+            <div
+              key={s.slug}
+              role="option"
+              aria-selected={i === activeIndex}
+              onMouseDown={() => {
+                router.push(`/ingredient/${s.slug}`);
+                setShowDropdown(false);
+              }}
+              onMouseEnter={() => setActiveIndex(i)}
+              style={{
+                background: i === activeIndex ? 'var(--accent-dim)' : 'transparent',
+                borderLeft: i === activeIndex
+                  ? '2px solid var(--accent)'
+                  : '2px solid transparent',
+                color: i === activeIndex ? 'var(--text-primary)' : 'var(--text-secondary)',
+              }}
+              className="flex items-center justify-between px-4 py-3 cursor-pointer transition-all duration-100"
+            >
+              <span style={{ fontFamily: 'Sora, sans-serif', fontSize: '14px' }}>
+                {s.name}
+              </span>
+              <span style={{
+                fontFamily: 'JetBrains Mono, monospace',
+                fontSize: '10px',
+                color: 'var(--text-tertiary)',
+                letterSpacing: '0.08em'
+              }}>
+                INGREDIENT →
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
     </form>
   );
 }

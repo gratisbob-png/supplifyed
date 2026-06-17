@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { getIngredient } from '@/lib/queries';
 import IngredientPage from '@/components/IngredientPage';
 import JsonLd from '@/components/JsonLd';
+import ScanLine from '@/components/ScanLine';
 
 interface Props {
   params: { slug: string };
@@ -77,6 +78,7 @@ export default async function IngredientRoute({ params }: Props) {
 
   return (
     <>
+      <ScanLine key={ingredient.slug} />
       <JsonLd data={substanceJsonLd} />
       {faqJsonLd && <JsonLd data={faqJsonLd} />}
 

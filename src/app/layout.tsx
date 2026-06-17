@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import ParticleCursor from '@/components/ParticleCursor';
 import './globals.css';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://supplifyed.com';
@@ -36,39 +37,33 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body style={{ backgroundColor: 'var(--c-bg)', color: 'var(--c-text)' }} className="min-h-screen antialiased">
+      <body style={{ backgroundColor: 'var(--bg-void)', color: 'var(--text-primary)' }} className="min-h-screen antialiased">
         <div className="max-w-6xl mx-auto px-4">
 
           {/* ── Nav ── */}
-          <header className="sticky top-0 z-50 flex items-center justify-between h-14 border-b border-[var(--c-border-subtle)] backdrop-blur-md"
-            style={{ background: 'rgba(0,0,0,0.72)' }}>
-            <a href="/" className="flex items-center gap-2.5 group">
-              <span className="text-[var(--c-accent)] text-lg leading-none select-none">✦</span>
-              <span className="text-base font-semibold tracking-tight text-[var(--c-text)] group-hover:text-[var(--c-accent)] transition-colors">
-                Supplifyed
-              </span>
+          <header className="navbar">
+            <a href="/" className="navbar-logo-link">
+              <span className="navbar-logo-dot" />
+              <span className="navbar-logo-text">Supplifyed</span>
             </a>
-            <nav className="flex items-center gap-1">
-              <a
-                href="/about"
-                className="px-3 py-1.5 rounded-md text-sm text-[var(--c-text-3)] hover:text-[var(--c-text)] hover:bg-[var(--c-surface-2)] transition-all"
-              >
-                About
-              </a>
-              <a
-                href="/builder"
-                className="px-3 py-1.5 rounded-md text-sm text-[var(--c-text-3)] hover:text-[var(--c-text)] hover:bg-[var(--c-surface-2)] transition-all"
-              >
-                Builder
-              </a>
-              <a
-                href="/search"
-                className="ml-1 px-3 py-1.5 rounded-md text-sm font-medium text-[var(--c-bg)] bg-[var(--c-accent)] hover:opacity-90 transition-opacity"
-              >
-                Search
-              </a>
-            </nav>
+            <div className="navbar-right">
+              <nav className="navbar-links">
+                <a href="/about" className="navbar-link">About</a>
+                <a href="/builder" className="navbar-link">Builder</a>
+              </nav>
+              <form action="/search" method="get">
+                <input
+                  type="text"
+                  name="q"
+                  placeholder="Search ingredients…"
+                  aria-label="Search"
+                  className="navbar-search-input"
+                />
+              </form>
+            </div>
           </header>
+
+          <ParticleCursor />
 
           {/* ── Page content ── */}
           <main className="py-8">{children}</main>

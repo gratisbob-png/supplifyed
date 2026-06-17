@@ -4,6 +4,7 @@ import ProductCard from '@/components/ProductCard';
 import EvidenceRating from '@/components/EvidenceRating';
 import SearchBar from '@/components/SearchBar';
 import Link from 'next/link';
+import { highlight } from '@/lib/highlight';
 
 interface Props {
   searchParams: { q?: string };
@@ -70,9 +71,10 @@ export default async function SearchPage({ searchParams }: Props) {
                   >
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-3 mb-1">
-                        <span className="font-semibold text-[var(--c-text)] group-hover:text-[var(--c-accent)] transition-colors text-sm">
-                          {ingredient.name}
-                        </span>
+                        <span
+                          className="font-semibold text-[var(--c-text)] group-hover:text-[var(--c-accent)] transition-colors text-sm"
+                          dangerouslySetInnerHTML={{ __html: highlight(ingredient.name, q) }}
+                        />
                         <EvidenceRating rating={ingredient.evidence_rating} />
                       </div>
                       <p className="text-[var(--c-text-3)] text-sm line-clamp-2 leading-relaxed">

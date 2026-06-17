@@ -75,23 +75,24 @@ export default async function CategoryPage({ params }: Props) {
         </nav>
 
         {/* Header */}
-        <div className={`cat-${params.slug} -mx-4 px-4 py-10 rounded-xl border border-white/[0.06]`}>
-          <h1 className="text-3xl font-bold text-white mb-2">{category.name}</h1>
-          <p className="text-[var(--c-text-2)] text-base max-w-2xl leading-relaxed">
-            {category.description}
-          </p>
-          <p className="text-[var(--c-text-3)] text-xs font-mono mt-3">
-            {ingredients.length} ingredient{ingredients.length !== 1 ? 's' : ''}
-          </p>
+        <div className="category-hero">
+          <span className="category-hero-ghost" aria-hidden="true">{category.name}</span>
+          <div className="category-hero-content">
+            <h1 className="category-hero-title">{category.name}</h1>
+            <p className="category-hero-desc">{category.description}</p>
+            <p className="category-hero-count">
+              {ingredients.length} ingredient{ingredients.length !== 1 ? 's' : ''}
+            </p>
+          </div>
         </div>
 
         {/* Evidence rating key */}
-        <div className="flex flex-wrap gap-3 p-4 rounded-xl border border-[var(--c-border)] bg-[var(--c-surface)]">
-          <span className="text-xs font-mono text-[var(--c-text-3)] uppercase tracking-wide self-center">
-            Evidence rating
-          </span>
+        <div className="evidence-filter-bar">
+          <span className="evidence-filter-label">Evidence</span>
           {(['strong', 'moderate', 'mixed', 'limited'] as const).map((r) => (
-            <EvidenceRating key={r} rating={r} />
+            <span key={r} className={`evidence-filter-pill evidence-filter-pill--${r}`}>
+              {r}
+            </span>
           ))}
         </div>
 
@@ -101,33 +102,25 @@ export default async function CategoryPage({ params }: Props) {
             No ingredients in this category yet.
           </p>
         ) : (
-          <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-            {ingredients.map((ingredient) => (
+          <div className="ingredient-card-grid">
+            {ingredients.map((ingredient, i) => (
               <Link
                 key={ingredient.id}
                 href={`/ingredient/${ingredient.slug}`}
-                className="card group block p-5 space-y-3"
+                className="ingredient-card"
+                style={{ '--i': i } as React.CSSProperties}
               >
-                <div className="flex items-start justify-between gap-2">
-                  <h2 className="font-semibold text-[var(--c-text)] group-hover:text-[var(--c-accent)] text-sm leading-snug transition-colors">
-                    {ingredient.name}
-                  </h2>
-                  <div className="shrink-0">
-                    <EvidenceRating rating={ingredient.evidence_rating} />
-                  </div>
+                <div className="ingredient-card-header">
+                  <h2 className="ingredient-card-name">{ingredient.name}</h2>
+                  <EvidenceRating rating={ingredient.evidence_rating} />
                 </div>
 
-                <p className="text-[var(--c-text-3)] text-sm line-clamp-3 leading-relaxed">
-                  {ingredient.description}
-                </p>
+                <p className="ingredient-card-body">{ingredient.description}</p>
 
                 {ingredient.primary_use.length > 0 && (
-                  <div className="flex flex-wrap gap-1">
+                  <div className="ingredient-card-tags">
                     {ingredient.primary_use.slice(0, 3).map((use) => (
-                      <span
-                        key={use}
-                        className="text-xs text-[var(--c-text-3)] border border-[var(--c-border-subtle)] rounded-full px-2 py-0.5"
-                      >
+                      <span key={use} className="ingredient-card-tag">
                         {use}
                       </span>
                     ))}
