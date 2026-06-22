@@ -17,7 +17,7 @@ import type {
 // "table:id" string and every Date to an ISO 8601 string.
 function toPlain<T>(val: T): T {
   if (val instanceof RecordId) return val.toString() as unknown as T;
-  if (val instanceof Date) return val.toISOString() as unknown as T;
+  if (val instanceof Date) return (isNaN(val.getTime()) ? null : val.toISOString()) as unknown as T;
   if (Array.isArray(val)) return val.map(toPlain) as unknown as T;
   if (val !== null && typeof val === 'object') {
     return Object.fromEntries(

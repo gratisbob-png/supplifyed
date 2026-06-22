@@ -2,6 +2,8 @@ import type { MetadataRoute } from 'next';
 import { CATEGORIES } from '@/lib/categories';
 import { getAllIngredients, getAllProducts } from '@/lib/queries';
 
+export const dynamic = 'force-dynamic';
+
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://supplifyed.com';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

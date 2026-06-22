@@ -1,0 +1,6 @@
+supplifyed.db
+*.db
+scripts/
+docs/
+schema/
+tests/
