@@ -6,7 +6,7 @@ export async function getDb(): Promise<Surreal> {
   if (db) {
     try {
       // Test the connection is still alive and authenticated
-      await db.query('SELECT 1');
+      await db.query('RETURN 1');
       return db;
     } catch {
       // Connection dead — reset and reconnect
