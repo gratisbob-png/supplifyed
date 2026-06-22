@@ -91,7 +91,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <input
                   type="text"
                   name="q"
-                  placeholder="Search ingredients…"
+                  placeholder="Search 156 ingredients..."
                   aria-label="Search"
                   className="navbar-search-input"
                 />

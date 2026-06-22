@@ -63,10 +63,9 @@ export default async function HomePage() {
     ).length;
   }
 
-  // Top 6 strong-evidence ingredients for featured row
+  // All strong-evidence ingredients for featured row
   const featuredIngredients = ingredients
-    .filter(ing => ing.evidence_rating === 'strong')
-    .slice(0, 6);
+    .filter(ing => ing.evidence_rating === 'strong');
 
   return (
     <div>
@@ -115,35 +114,29 @@ export default async function HomePage() {
 
             <p className="home-subcopy">
               What is in it, what the research says, where to buy it.
-              Every claim carries a source. No rankings. No opinions. Ever.
             </p>
 
             <div className="home-stats">
               <div className="home-stat">
                 <span className="home-stat-num">156</span>
-                <span className="home-stat-label">Compounds</span>
+                <span className="home-stat-label">Ingredients</span>
               </div>
               <div className="home-stat-divider" />
               <div className="home-stat">
                 <span className="home-stat-num">215</span>
-                <span className="home-stat-label">Evidence nodes</span>
+                <span className="home-stat-label">Evidence records</span>
               </div>
               <div className="home-stat-divider" />
               <div className="home-stat">
                 <span className="home-stat-num">9</span>
-                <span className="home-stat-label">Categories</span>
+                <span className="home-stat-label">Ingredient families</span>
               </div>
             </div>
 
             <div className="pt-2">
               <SearchBar autoFocus={false} />
               <p className="mt-4 text-sm text-[var(--c-text-3)]">
-                Try:{' '}
-                <span className="text-[var(--c-text-2)]">bacopa monnieri</span>
-                {' · '}
-                <span className="text-[var(--c-text-2)]">magnesium L-threonate</span>
-                {' · '}
-                <span className="text-[var(--c-text-2)]">does l-theanine work</span>
+                Every claim carries a source badge.
               </p>
             </div>
           </div>
@@ -160,7 +153,7 @@ export default async function HomePage() {
               color: 'var(--text-tertiary)',
               margin: 0,
             }}>
-              Highest Evidence
+              Highest evidence rating
             </p>
             <div className="featured-row">
               {featuredIngredients.map(ing => (
@@ -184,7 +177,7 @@ export default async function HomePage() {
               color: 'var(--accent)',
               margin: 0,
             }}>
-              Browse by category
+              Browse by ingredient family
             </p>
             <h2 style={{
               fontFamily: "'Sora', sans-serif",

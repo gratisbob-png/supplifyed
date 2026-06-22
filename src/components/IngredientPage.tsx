@@ -407,7 +407,7 @@ export default function IngredientPage({ ingredient }: Props) {
       {(ingredient.faqs?.length ?? 0) > 0 && (
         <Reveal>
           <section>
-            <SectionHeading>Frequently asked</SectionHeading>
+            <SectionHeading>Common questions</SectionHeading>
             <div className="space-y-2">
               {(ingredient.faqs ?? []).map((faq) => (
                 <div key={faq.id} className="card p-5">

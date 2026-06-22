@@ -1,85 +1,104 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy',
+  title: 'Privacy',
+  description: 'Privacy policy for Supplifyed — what data we collect and how we use it.',
 };
+
+const SECTIONS = [
+  {
+    heading: 'No personal data',
+    body: 'Supplifyed has no user accounts, no registration, and no email capture. We collect no personally identifiable information by default. Search queries are not stored or tracked.',
+  },
+  {
+    heading: 'Anonymised usage data',
+    body: 'We collect anonymised usage data — which ingredients are viewed, which product tiers attract attention, and which links are clicked. This data is aggregate and anonymised. No individual user can be identified from it. We sell anonymised category behaviour data to brands and manufacturers. This is stated explicitly here and in our terms.',
+  },
+  {
+    heading: 'Affiliate links',
+    body: 'Links to retailers (Amazon, brand stores, Awin, CJ) include affiliate tracking parameters. Clicking these links and completing a purchase may earn Supplifyed a commission at no cost to you. Affiliate clicks may be tracked by third-party networks per their own privacy policies.',
+  },
+  {
+    heading: 'Cookies',
+    body: 'Google Analytics 4 (if enabled) collects anonymous usage data and requires cookies. A session identifier stored in sessionStorage — not cookies — is used for behaviour aggregation. It is not stored between sessions. No cookies beyond what Next.js requires for operation are set.',
+  },
+  {
+    heading: 'Your rights',
+    body: 'As we collect no personally identifiable information, there is no personal data to access, correct, or delete. For Google Analytics data, see Google\'s privacy controls.',
+  },
+];
 
 export default function PrivacyPage() {
   return (
-    <div className="max-w-2xl mx-auto space-y-8">
-      <div>
-        <p className="text-xs font-mono uppercase tracking-widest text-[var(--c-text-3)] mb-2">Legal</p>
-        <h1 className="text-2xl font-bold text-[var(--c-text)]">Privacy Policy</h1>
-      </div>
+    <div style={{ maxWidth: '720px', margin: '0 auto', padding: '48px 24px' }}>
 
-      <div className="space-y-6 text-[var(--c-text-2)] text-sm leading-relaxed">
-        <p>
-          Supplifyed provides structured supplement information. This policy explains what data we
-          collect and how we use it.
-        </p>
+      <p style={{
+        fontFamily: 'JetBrains Mono, monospace',
+        fontSize: '11px',
+        color: 'var(--accent)',
+        letterSpacing: '0.15em',
+        textTransform: 'uppercase',
+        marginBottom: '16px',
+      }}>
+        Legal
+      </p>
 
-        <section>
-          <h2 className="text-[var(--c-text)] font-semibold mb-2">No user accounts</h2>
-          <p>
-            Supplifyed has no user accounts, no registration, and no email capture of any kind. We
-            collect no personally identifiable information.
+      <h1 style={{
+        fontFamily: 'Sora, sans-serif',
+        fontWeight: 300,
+        fontSize: '48px',
+        letterSpacing: '-0.02em',
+        color: 'var(--text-primary)',
+        marginBottom: '32px',
+        lineHeight: 1,
+      }}>
+        Privacy
+      </h1>
+
+      {SECTIONS.map(({ heading, body }) => (
+        <div key={heading} style={{ marginBottom: '32px' }}>
+          <h2 style={{
+            fontFamily: 'Sora, sans-serif',
+            fontWeight: 500,
+            fontSize: '18px',
+            color: 'var(--text-primary)',
+            marginBottom: '10px',
+          }}>
+            {heading}
+          </h2>
+          <p style={{
+            fontSize: '15px',
+            lineHeight: '1.7',
+            color: 'var(--text-secondary)',
+          }}>
+            {body}
           </p>
-        </section>
+        </div>
+      ))}
 
-        <section>
-          <h2 className="text-[var(--c-text)] font-semibold mb-2">Anonymised behaviour data</h2>
-          <p>
-            We collect anonymised usage data — which ingredients are viewed, which product tiers
-            attract attention, and which links are clicked. This data is aggregate and anonymised.
-            No individual user can be identified from it.
-          </p>
-          <p className="mt-2">
-            We sell anonymised category behaviour data to brands and manufacturers. This is stated
-            explicitly here and in our terms.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="text-[var(--c-text)] font-semibold mb-2">Affiliate links</h2>
-          <p>
-            Links to retailers (Amazon, brand stores) may include affiliate tracking parameters.
-            Clicking these links may earn Supplifyed a commission at no cost to you. Affiliate links
-            are a commercial convenience, not an endorsement of any product.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="text-[var(--c-text)] font-semibold mb-2">Cookies</h2>
-          <p>
-            We use Google Analytics 4 for traffic analysis, which requires cookies. We use a
-            session identifier (stored in sessionStorage, not cookies) for behaviour aggregation.
-            This identifier is not stored between sessions.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="text-[var(--c-text)] font-semibold mb-2">Your rights</h2>
-          <p>
-            As we collect no personally identifiable information, there is no personal data to
-            access, correct, or delete. For Google Analytics data, see Google&rsquo;s privacy
-            controls.
-          </p>
-        </section>
-
-        <section>
-          <h2 className="text-[var(--c-text)] font-semibold mb-2">Contact</h2>
-          <p>
-            Questions about this policy:{' '}
-            <a href="mailto:privacy@supplifyed.com" className="text-[var(--c-accent)] hover:opacity-80 transition-opacity">
-              privacy@supplifyed.com
-            </a>
-          </p>
-        </section>
-
-        <p className="text-[var(--c-text-3)] text-xs font-mono pt-4 border-t border-[var(--c-border-subtle)]">
-          Last updated: June 2026
+      <div style={{
+        borderTop: '1px solid var(--border-subtle)',
+        paddingTop: '24px',
+        marginTop: '16px',
+      }}>
+        <p style={{
+          fontFamily: 'JetBrains Mono, monospace',
+          fontSize: '10px',
+          color: 'var(--text-tertiary)',
+          letterSpacing: '0.05em',
+        }}>
+          Last updated: June 2026 ·{' '}
+          <a href="mailto:privacy@supplifyed.com" style={{ color: 'var(--accent)' }}>
+            privacy@supplifyed.com
+          </a>
+          {' · '}
+          <Link href="/about" style={{ color: 'var(--accent)' }}>
+            About Supplifyed
+          </Link>
         </p>
       </div>
+
     </div>
   );
 }
