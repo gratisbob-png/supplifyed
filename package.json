@@ -33,7 +33,8 @@
     "test:affiliate-links": "tsx scripts/test_affiliate_links.ts",
     "pipeline:run": "tsx scripts/run_pipeline.ts",
     "pipeline:test": "tsx scripts/test_pipeline.ts",
-    "review:exceptions": "tsx scripts/review_exceptions.ts"
+    "review:exceptions": "tsx scripts/review_exceptions.ts",
+    "seed:evidence:verified": "tsx scripts/seed_evidence_verified.ts"
   },
   "dependencies": {
     "@types/three": "^0.184.1",
