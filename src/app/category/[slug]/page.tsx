@@ -3,7 +3,6 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getCategoryBySlug, CATEGORIES } from '@/lib/categories';
 import { getCategoryIngredients } from '@/lib/queries';
-import { getIngredientImage } from '@/lib/images';
 import EvidenceRating from '@/components/EvidenceRating';
 import JsonLd from '@/components/JsonLd';
 
@@ -13,20 +12,21 @@ interface Props {
   params: { slug: string };
 }
 
-// Maps ingredient.category (DB value) → subtle rgba tint for image overlay
-const CATEGORY_TINTS: Record<string, string> = {
-  'Sleep':        'rgba(99,  102, 241, 0.15)',
-  'Performance':  'rgba(16,  185, 129, 0.15)',
-  'Recovery':     'rgba(59,  130, 246, 0.15)',
-  'Gut Health':   'rgba(132, 204,  22, 0.15)',
-  'Longevity':    'rgba(139,  92, 246, 0.15)',
-  'Vitamins':     'rgba(249, 115,  22, 0.15)',
-  'Minerals':     'rgba(6,   182, 212, 0.15)',
-  'Herbal':       'rgba(236,  72, 153, 0.15)',
-  'Omega Oils':   'rgba(245, 158,  11, 0.15)',
-  'Protein':      'rgba(16,  185, 129, 0.15)',
-  'Amino Acids':  'rgba(16,  185, 129, 0.15)',
+// Ingredient card image strip — radial glow fades to card body (#0F1012)
+const CARD_GRADIENTS: Record<string, string> = {
+  'Sleep':       'radial-gradient(ellipse 120% 200% at 50% -5%, rgba(99,102,241,0.65) 0%, transparent 60%), linear-gradient(to bottom, #0d0d24 0%, #0F1012 100%)',
+  'Performance': 'radial-gradient(ellipse 120% 200% at 50% -5%, rgba(59,130,246,0.65) 0%, transparent 60%), linear-gradient(to bottom, #0a1228 0%, #0F1012 100%)',
+  'Recovery':    'radial-gradient(ellipse 120% 200% at 50% -5%, rgba(6,182,212,0.65) 0%, transparent 60%), linear-gradient(to bottom, #04121a 0%, #0F1012 100%)',
+  'Gut Health':  'radial-gradient(ellipse 120% 200% at 50% -5%, rgba(16,185,129,0.65) 0%, transparent 60%), linear-gradient(to bottom, #071a10 0%, #0F1012 100%)',
+  'Longevity':   'radial-gradient(ellipse 120% 200% at 50% -5%, rgba(5,150,105,0.60) 0%, transparent 60%), linear-gradient(to bottom, #051a0c 0%, #0F1012 100%)',
+  'Vitamins':    'radial-gradient(ellipse 120% 200% at 50% -5%, rgba(245,158,11,0.65) 0%, transparent 60%), linear-gradient(to bottom, #1a1000 0%, #0F1012 100%)',
+  'Minerals':    'radial-gradient(ellipse 120% 200% at 50% -5%, rgba(100,116,139,0.60) 0%, transparent 60%), linear-gradient(to bottom, #0f1015 0%, #0F1012 100%)',
+  'Herbal':      'radial-gradient(ellipse 120% 200% at 50% -5%, rgba(132,204,22,0.65) 0%, transparent 60%), linear-gradient(to bottom, #0a1405 0%, #0F1012 100%)',
+  'Omega Oils':  'radial-gradient(ellipse 120% 200% at 50% -5%, rgba(245,158,11,0.60) 0%, transparent 60%), linear-gradient(to bottom, #1a1200 0%, #0F1012 100%)',
+  'Protein':     'radial-gradient(ellipse 120% 200% at 50% -5%, rgba(59,130,246,0.65) 0%, transparent 60%), linear-gradient(to bottom, #0a1228 0%, #0F1012 100%)',
+  'Amino Acids': 'radial-gradient(ellipse 120% 200% at 50% -5%, rgba(59,130,246,0.60) 0%, transparent 60%), linear-gradient(to bottom, #0a1228 0%, #0F1012 100%)',
 };
+const DEFAULT_CARD_GRADIENT = 'radial-gradient(ellipse 120% 200% at 50% -5%, rgba(0,229,196,0.55) 0%, transparent 60%), linear-gradient(to bottom, #040f0a 0%, #0F1012 100%)';
 
 export async function generateStaticParams() {
   return CATEGORIES.map((c) => ({ slug: c.slug }));
@@ -43,12 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description,
-    openGraph: {
-      title: `${title} — Supplifyed`,
-      description,
-      url,
-      type: 'website',
-    },
+    openGraph: { title: `${title} — Supplifyed`, description, url, type: 'website' },
     alternates: { canonical: url },
   };
 }
@@ -79,14 +74,12 @@ export default async function CategoryPage({ params }: Props) {
 
       <div className="space-y-10">
 
-        {/* Breadcrumb */}
         <nav className="text-xs font-mono text-[var(--c-text-3)]" aria-label="Breadcrumb">
           <Link href="/" className="hover:text-[var(--c-text-2)] transition-colors">Home</Link>
           <span className="mx-2 text-[var(--c-border)]">·</span>
           <span className="text-[var(--c-text-2)]">{category.name}</span>
         </nav>
 
-        {/* Header */}
         <div className="category-hero">
           <span className="category-hero-ghost" aria-hidden="true">{category.name}</span>
           <div className="category-hero-content">
@@ -98,7 +91,6 @@ export default async function CategoryPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Evidence rating key */}
         <div className="evidence-filter-bar">
           <span className="evidence-filter-label">Evidence</span>
           {(['strong', 'moderate', 'mixed', 'limited'] as const).map((r) => (
@@ -108,59 +100,44 @@ export default async function CategoryPage({ params }: Props) {
           ))}
         </div>
 
-        {/* Ingredient grid */}
         {ingredients.length === 0 ? (
           <p className="text-[var(--c-text-3)] py-16 text-center font-mono">
             No ingredients in this category yet.
           </p>
         ) : (
           <div className="ingredient-card-grid">
-            {ingredients.map((ingredient, i) => {
-              const tint = CATEGORY_TINTS[ingredient.category] ?? 'rgba(16,185,129,0.12)';
-              return (
-                <Link
-                  key={ingredient.id}
-                  href={`/ingredient/${ingredient.slug}`}
-                  className="ingredient-card"
-                  style={{ '--i': i } as React.CSSProperties}
-                >
-                  {/* Image strip */}
-                  <div
-                    className="ingredient-card-image"
-                    style={{
-                      backgroundImage: `url(${getIngredientImage(ingredient.name, 400, 200)})`,
-                    }}
-                  >
-                    <div
-                      className="ingredient-card-image-overlay"
-                      style={{
-                        background: `linear-gradient(135deg, ${tint} 0%, transparent 60%), linear-gradient(to bottom, transparent 30%, var(--bg-surface) 100%)`,
-                      }}
-                    />
-                  </div>
+            {ingredients.map((ingredient, i) => (
+              <Link
+                key={ingredient.id}
+                href={`/ingredient/${ingredient.slug}`}
+                className="ingredient-card"
+                style={{ '--i': i } as React.CSSProperties}
+              >
+                {/* Gradient image strip — category colour fades to card body */}
+                <div
+                  className="ingredient-card-image"
+                  style={{ background: CARD_GRADIENTS[ingredient.category] ?? DEFAULT_CARD_GRADIENT }}
+                />
 
-                  {/* Card content */}
-                  <div className="ingredient-card-content">
-                    <div className="ingredient-card-header">
-                      <h2 className="ingredient-card-name">{ingredient.name}</h2>
-                      <EvidenceRating rating={ingredient.evidence_rating} />
-                    </div>
-                    <p className="ingredient-card-body">{ingredient.description}</p>
-                    {ingredient.primary_use.length > 0 && (
-                      <div className="ingredient-card-tags">
-                        {ingredient.primary_use.slice(0, 3).map((use) => (
-                          <span key={use} className="ingredient-card-tag">{use}</span>
-                        ))}
-                      </div>
-                    )}
+                <div className="ingredient-card-content">
+                  <div className="ingredient-card-header">
+                    <h2 className="ingredient-card-name">{ingredient.name}</h2>
+                    <EvidenceRating rating={ingredient.evidence_rating} />
                   </div>
-                </Link>
-              );
-            })}
+                  <p className="ingredient-card-body">{ingredient.description}</p>
+                  {ingredient.primary_use.length > 0 && (
+                    <div className="ingredient-card-tags">
+                      {ingredient.primary_use.slice(0, 3).map((use) => (
+                        <span key={use} className="ingredient-card-tag">{use}</span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </Link>
+            ))}
           </div>
         )}
 
-        {/* Back */}
         <div className="pt-4 border-t border-[var(--c-border-subtle)]">
           <Link href="/" className="text-[var(--c-text-3)] hover:text-[var(--c-accent)] text-sm transition-colors">
             ← All categories
