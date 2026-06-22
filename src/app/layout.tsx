@@ -120,9 +120,28 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-[var(--c-text-3)]">
                 <a href="/about" className="hover:text-[var(--c-text)] transition-colors">About</a>
                 <a href="/privacy" className="hover:text-[var(--c-text)] transition-colors">Privacy</a>
+                <a href="/disclaimer" className="hover:text-[var(--c-text)] transition-colors">Disclaimer</a>
                 <a href="/builder" className="hover:text-[var(--c-text)] transition-colors">Ingredient Builder</a>
               </nav>
             </div>
+
+            <div style={{
+              borderTop: '1px solid var(--c-border-subtle)',
+              marginTop: '24px',
+              paddingTop: '16px',
+              maxWidth: '800px',
+            }}>
+              <p style={{
+                fontFamily: 'JetBrains Mono, monospace',
+                fontSize: '10px',
+                lineHeight: '1.7',
+                color: 'var(--text-tertiary)',
+                letterSpacing: '0.02em',
+              }}>
+                DISCLAIMER: The information presented on Supplifyed is sourced from third-party peer-reviewed research and is provided for informational purposes only. It does not constitute medical advice, diagnosis, or treatment. Evidence ratings reflect the current state of published research and are not endorsements. Individual results may vary. Always consult a qualified healthcare professional before starting any supplement regimen. Supplifyed does not manufacture, endorse, or recommend any specific product. Links to retailers may include affiliate commissions. Supplement statements have not been evaluated by the Food and Drug Administration or equivalent regulatory body.
+              </p>
+            </div>
+
             <p className="mt-6 text-[10px] font-mono text-[var(--c-text-3)]/40 tracking-widest uppercase">
               supplifyed.com
             </p>

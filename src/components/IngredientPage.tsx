@@ -68,6 +68,40 @@ export default function IngredientPage({ ingredient }: Props) {
         </div>
       </Reveal>
 
+      {/* ── Disclaimer banner ── */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: '10px',
+        background: 'rgba(245,166,35,0.06)',
+        border: '1px solid rgba(245,166,35,0.2)',
+        borderRadius: '8px',
+        padding: '12px 16px',
+        marginBottom: '24px',
+      }}>
+        <span style={{
+          fontFamily: 'JetBrains Mono, monospace',
+          fontSize: '10px',
+          color: '#F5A623',
+          letterSpacing: '0.08em',
+          textTransform: 'uppercase' as const,
+          flexShrink: 0,
+          paddingTop: '1px',
+        }}>
+          ⚠ INFO
+        </span>
+        <p style={{
+          fontFamily: 'JetBrains Mono, monospace',
+          fontSize: '10px',
+          lineHeight: '1.6',
+          color: 'var(--text-tertiary)',
+          margin: 0,
+          letterSpacing: '0.02em',
+        }}>
+          This information is sourced from third-party peer-reviewed research. It is not medical advice. Evidence ratings reflect published research only — not product endorsements. Consult a healthcare professional before use.
+        </p>
+      </div>
+
       {/* ── Chemical identity ── */}
       {(ingredient.molecular_formula || ingredient.molecular_weight || ingredient.iupac_name || ingredient.common_name) && (
         <Reveal delay={60}>
@@ -354,6 +388,17 @@ export default function IngredientPage({ ingredient }: Props) {
                 </div>
               ))}
             </div>
+            <p style={{
+              fontFamily: 'JetBrains Mono, monospace',
+              fontSize: '9px',
+              color: 'var(--text-tertiary)',
+              lineHeight: '1.6',
+              marginTop: '12px',
+              letterSpacing: '0.02em',
+              opacity: 0.7,
+            }}>
+              Study data sourced from PubMed and CrossRef. Supplifyed does not conduct original research. All citations link to original third-party publications. Funding source classifications are inferred from available metadata.
+            </p>
           </section>
         </Reveal>
       )}
@@ -403,6 +448,16 @@ export default function IngredientPage({ ingredient }: Props) {
         <Reveal>
           <section>
             <SectionHeading>Products containing {ingredient.name}</SectionHeading>
+            <p style={{
+              fontFamily: 'JetBrains Mono, monospace',
+              fontSize: '9px',
+              color: 'var(--text-tertiary)',
+              letterSpacing: '0.05em',
+              marginBottom: '12px',
+              opacity: 0.7,
+            }}>
+              ↗ AFFILIATE DISCLOSURE — Links to retailers may earn Supplifyed a commission at no cost to you. Product selection is based on ingredient content only, not commercial relationships.
+            </p>
             <TierStack tiers={tiers} ingredientId={ingredient.id} />
           </section>
         </Reveal>
