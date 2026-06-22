@@ -14,7 +14,7 @@ async function main() {
     'SELECT count() AS c FROM product WHERE array::len(->contains->ingredient) = 0 GROUP ALL'
   );
   const [[noEvidence]] = await db.query<{c:number}[][]>(
-    'SELECT count() AS c FROM ingredient WHERE array::len(<-supported_by<-evidence) = 0 GROUP ALL'
+    'SELECT count() AS c FROM ingredient WHERE array::len(->supported_by->evidence) = 0 GROUP ALL'
   );
   const [[noFaq]] = await db.query<{c:number}[][]>(
     'SELECT count() AS c FROM faq WHERE array::len(->answers_about->ingredient) = 0 GROUP ALL'

@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getIngredient } from '@/lib/queries';
+import { getIngredientImage } from '@/lib/images';
 import IngredientPage from '@/components/IngredientPage';
 import JsonLd from '@/components/JsonLd';
 import ScanLine from '@/components/ScanLine';
@@ -25,21 +26,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: ingredient.name,
     description,
-    openGraph: {
-      title,
-      description,
-      url,
-      type: 'article',
-      siteName: 'Supplifyed',
-    },
-    twitter: {
-      card: 'summary',
-      title,
-      description,
-    },
-    alternates: {
-      canonical: url,
-    },
+    openGraph: { title, description, url, type: 'article', siteName: 'Supplifyed' },
+    twitter: { card: 'summary', title, description },
+    alternates: { canonical: url },
   };
 }
 
@@ -68,10 +57,7 @@ export default async function IngredientRoute({ params }: Props) {
           mainEntity: (ingredient.faqs ?? []).map((faq) => ({
             '@type': 'Question',
             name: faq.question,
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: faq.answer,
-            },
+            acceptedAnswer: { '@type': 'Answer', text: faq.answer },
           })),
         }
       : null;
@@ -81,6 +67,15 @@ export default async function IngredientRoute({ params }: Props) {
       <ScanLine key={ingredient.slug} />
       <JsonLd data={substanceJsonLd} />
       {faqJsonLd && <JsonLd data={faqJsonLd} />}
+
+      {/* Full-width hero image */}
+      <div
+        className="ingredient-hero"
+        style={{ backgroundImage: `url(${getIngredientImage(ingredient.name, 1200, 380)})` }}
+      >
+        <div className="ingredient-hero-overlay" />
+        <p className="ingredient-hero-title" aria-hidden="true">{ingredient.name}</p>
+      </div>
 
       <div className="space-y-8">
         {/* Breadcrumb */}

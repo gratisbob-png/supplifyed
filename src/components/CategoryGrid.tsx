@@ -1,43 +1,40 @@
 import Link from 'next/link';
 import { CATEGORIES } from '@/lib/categories';
+import { getCategoryImage } from '@/lib/images';
 
-const CATEGORY_ICONS: Record<string, string> = {
-  performance: '⚡',
-  sleep:       '🌙',
-  inflammation:'🔥',
-  'gut-health':'🦠',
-  longevity:   '⏱',
-  recovery:    '🔄',
-  vitamins:    '💊',
-  minerals:    '🪨',
-  herbals:     '🌿',
-};
+interface Props {
+  counts?: Record<string, number>;
+}
 
-export default function CategoryGrid() {
+export default function CategoryGrid({ counts = {} }: Props) {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+    <div className="cat-img-grid">
       {CATEGORIES.map((cat, i) => (
         <Link
           key={cat.slug}
           href={`/category/${cat.slug}`}
-          className={`cat-${cat.slug} category-card relative block overflow-hidden rounded-xl border border-white/[0.06] p-5 min-h-[130px]`}
-          style={{ '--ci': i } as React.CSSProperties}
+          className="cat-img-card"
+          style={{
+            '--ci': i,
+            backgroundImage: `url(${getCategoryImage(cat.slug)})`,
+          } as React.CSSProperties}
         >
-          {/* Subtle top-edge highlight */}
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+          <div className="cat-img-overlay" />
 
-          {/* Icon */}
-          <div className="text-2xl mb-3 leading-none select-none">
-            {CATEGORY_ICONS[cat.slug] ?? '●'}
+          {/* Ingredient count pill — top-right */}
+          {(counts[cat.slug] ?? 0) > 0 && (
+            <div className="cat-img-count">
+              {counts[cat.slug]} ingredients
+            </div>
+          )}
+
+          {/* Bottom: category name */}
+          <div className="cat-img-content">
+            <p className="cat-img-name">{cat.name}</p>
           </div>
 
-          <h3 className="category-card-name font-semibold text-white text-sm tracking-tight mb-1">
-            {cat.name}
-            <span className="category-card-arrow">→</span>
-          </h3>
-          <p className="text-[var(--c-text-3)] text-xs leading-relaxed line-clamp-2">
-            {cat.description}
-          </p>
+          {/* Bottom accent line — scales in on hover */}
+          <div className="cat-img-accent" />
         </Link>
       ))}
     </div>
