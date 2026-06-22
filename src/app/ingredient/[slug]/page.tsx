@@ -79,17 +79,53 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const ingredient = await getIngredient(params.slug);
   if (!ingredient) return {};
 
-  const title = `${ingredient.name} — Evidence, Dose, and Products`;
-  const description = ingredient.description.length > 160
-    ? ingredient.description.slice(0, 157) + '...'
-    : ingredient.description;
-  const url = `${SITE_URL}/ingredient/${ingredient.slug}`;
+  const { name, category, evidence_rating: rating, description: rawDesc, synonyms, slug } = ingredient;
+  const url = `${SITE_URL}/ingredient/${slug}`;
+
+  const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
+  // Keyword-dense meta description: name + rating + leading sentence of description
+  const lead = rawDesc.length > 130 ? rawDesc.slice(0, 127) + '…' : rawDesc;
+  const metaDesc = `${name} (${rating} evidence, ${category}): ${lead}`.slice(0, 160);
+
+  const title = `${name} — Evidence, Benefits & ${category} Research`;
+
+  const keywords = [
+    `${name} evidence`,
+    `${name} benefits`,
+    `${name} research`,
+    `${name} dosage`,
+    `${name} supplement`,
+    `${category.toLowerCase()} supplements`,
+    `${category.toLowerCase()} research`,
+    `${name} side effects`,
+    `${name} studies`,
+    'evidence-based supplement',
+    ...(synonyms?.slice(0, 3).map(s => `${s} supplement`) ?? []),
+  ];
+
+  const ogImage = `/api/og?name=${encodeURIComponent(name)}&category=${encodeURIComponent(category)}&rating=${encodeURIComponent(rating)}`;
 
   return {
-    title: ingredient.name,
-    description,
-    openGraph: { title, description, url, type: 'article', siteName: 'Supplifyed' },
-    twitter: { card: 'summary', title, description },
+    title,
+    description: metaDesc,
+    keywords,
+    openGraph: {
+      title: `${name} — ${cap(rating)} Evidence | Supplifyed`,
+      description: metaDesc,
+      url,
+      type: 'article',
+      siteName: 'Supplifyed',
+      locale: 'en_GB',
+      images: [{ url: ogImage, width: 1200, height: 630, alt: `${name} — ${category} supplement, ${rating} evidence` }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${name} — ${cap(rating)} Evidence`,
+      description: metaDesc,
+      images: [ogImage],
+      creator: '@supplifyed',
+    },
     alternates: { canonical: url },
   };
 }

@@ -35,7 +35,21 @@ const KnowledgeGraph = loadDynamic(
 export const metadata: Metadata = {
   title: 'Supplifyed — Supplement Intelligence',
   description:
-    'Evidence-rated supplement information by category. What is in it, what the research says, where to buy it. No opinions. No rankings.',
+    'Evidence-rated supplement intelligence. 156 ingredients across 9 categories. What is in it, what the research says, where to buy it. Every claim carries a source badge. No rankings. No opinions.',
+  openGraph: {
+    title: 'Supplifyed — Supplement Intelligence',
+    description: 'Evidence-rated supplement intelligence. 156 ingredients. 215 evidence nodes. Zero opinions.',
+    url: 'https://supplifyed.com',
+    type: 'website',
+    images: [{ url: '/api/og', width: 1200, height: 630, alt: 'Supplifyed — Supplement Intelligence' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Supplifyed — Supplement Intelligence',
+    description: 'Evidence-rated supplement intelligence. 156 ingredients. Zero opinions.',
+    images: ['/api/og'],
+  },
+  alternates: { canonical: 'https://supplifyed.com' },
 };
 
 export default async function HomePage() {

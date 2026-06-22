@@ -36,14 +36,49 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const category = getCategoryBySlug(params.slug);
   if (!category) return {};
 
-  const title = `${category.name} Supplements`;
-  const description = category.description;
-  const url = `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://supplifyed.com'}/category/${params.slug}`;
+  const url = `https://supplifyed.com/category/${params.slug}`;
+  const title = `${category.name} Supplements — Research & Evidence Ratings`;
+  const catLower = category.name.toLowerCase();
+
+  // Description: category description + keyword anchors
+  const desc = `${category.description} Browse ${catLower} supplement ingredients with evidence ratings, dosage research, and source-badged citations. No opinions.`;
+  const metaDesc = desc.length > 160 ? desc.slice(0, 157) + '…' : desc;
+
+  const keywords = [
+    `${catLower} supplements`,
+    `${catLower} supplement research`,
+    `best ${catLower} supplements`,
+    `${catLower} ingredient evidence`,
+    `evidence-based ${catLower}`,
+    `${catLower} dosage research`,
+    `${catLower} supplements review`,
+    'supplement evidence rating',
+    'evidence-based supplements',
+    'supplement database',
+  ];
+
+  const ogImage = `/api/og?category=${encodeURIComponent(category.name)}&type=category`;
 
   return {
     title,
-    description,
-    openGraph: { title: `${title} — Supplifyed`, description, url, type: 'website' },
+    description: metaDesc,
+    keywords,
+    openGraph: {
+      title: `${category.name} Supplements | Supplifyed`,
+      description: metaDesc,
+      url,
+      type: 'website',
+      siteName: 'Supplifyed',
+      locale: 'en_GB',
+      images: [{ url: ogImage, width: 1200, height: 630, alt: `${category.name} supplements — evidence ratings` }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${category.name} Supplements — Evidence Ratings`,
+      description: metaDesc,
+      images: [ogImage],
+      creator: '@supplifyed',
+    },
     alternates: { canonical: url },
   };
 }

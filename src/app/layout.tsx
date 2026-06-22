@@ -2,35 +2,71 @@ import type { Metadata } from 'next';
 import ParticleCursor from '@/components/ParticleCursor';
 import './globals.css';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://supplifyed.com';
-
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL('https://supplifyed.com'),
   title: {
     default: 'Supplifyed — Supplement Intelligence',
     template: '%s | Supplifyed',
   },
   description:
-    'Evidence-rated supplement information. What is in it, what the research says, where to buy it. No opinions. No rankings.',
-  openGraph: {
-    type: 'website',
-    siteName: 'Supplifyed',
-    locale: 'en_GB',
-  },
-  twitter: {
-    card: 'summary',
-    site: '@supplifyed',
-  },
+    'Evidence-rated supplement intelligence. What is in it, what the research says, where to buy it. Every claim carries a source badge. No rankings. No opinions.',
+  keywords: [
+    'supplement ingredients',
+    'evidence-based supplements',
+    'supplement research',
+    'ingredient evidence rating',
+    'supplement database',
+    'nootropics research',
+    'vitamin evidence',
+    'mineral supplements research',
+    'supplement intelligence',
+    'source-badged supplements',
+  ],
+  authors: [{ name: 'Supplifyed' }],
+  creator: 'Supplifyed',
+  publisher: 'Supplifyed',
   robots: {
     index: true,
     follow: true,
     googleBot: {
       index: true,
       follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
     },
   },
+  openGraph: {
+    type: 'website',
+    locale: 'en_GB',
+    url: 'https://supplifyed.com',
+    siteName: 'Supplifyed',
+    title: 'Supplifyed — Supplement Intelligence',
+    description:
+      'Evidence-rated supplement intelligence. 156 ingredients. 215 evidence nodes. Zero opinions.',
+    images: [
+      {
+        url: '/api/og',
+        width: 1200,
+        height: 630,
+        alt: 'Supplifyed — Supplement Intelligence',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Supplifyed — Supplement Intelligence',
+    description:
+      'Evidence-rated supplement intelligence. 156 ingredients. Zero opinions.',
+    images: ['/api/og'],
+    creator: '@supplifyed',
+  },
   alternates: {
-    canonical: SITE_URL,
+    canonical: 'https://supplifyed.com',
+  },
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
   },
 };
 
