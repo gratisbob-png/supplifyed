@@ -219,10 +219,14 @@ export default async function HomePage() {
         )}
 
         {/* ── 3D Knowledge Graph ───────────────────────────────────────────── */}
-        <section className="kg-hero-section">
-          <div style={{ height: '100vh' }}>
-            <KnowledgeGraph />
-          </div>
+        <section style={{
+          width: '100vw',
+          marginLeft: 'calc(-50vw + 50%)',
+          marginRight: 'calc(-50vw + 50%)',
+          height: 'calc(100vh - 64px)',
+          overflow: 'hidden',
+        }}>
+          <KnowledgeGraph />
         </section>
 
       </div>
