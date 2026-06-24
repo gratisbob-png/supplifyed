@@ -81,17 +81,6 @@ export default async function HomePage() {
         </div>
       </nav>
 
-      {/* ── 3D Knowledge Graph Hero ─────────────────────────────────────── */}
-      <section className="kg-hero-section">
-        <div style={{ height: '100vh' }}>
-          <KnowledgeGraph />
-        </div>
-        <div className="kg-scroll-hint">
-          <span className="kg-chevron">⌄</span>
-        </div>
-      </section>
-
-
       {/* ── Below-fold content ──────────────────────────────────────────── */}
       <div className="space-y-20 mt-20">
 
@@ -228,6 +217,13 @@ export default async function HomePage() {
             <IngredientIndex ingredients={ingredients} />
           </section>
         )}
+
+        {/* ── 3D Knowledge Graph ───────────────────────────────────────────── */}
+        <section className="kg-hero-section">
+          <div style={{ height: '100vh' }}>
+            <KnowledgeGraph />
+          </div>
+        </section>
 
       </div>
     </div>
